@@ -18,10 +18,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors({
-    origin: 'https://chat-app-3u9n.onrender.com',
+    origin: "https://chat-app-3u9n.onrender.com", 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
 }));
+
 
 app.use(cookieParser());
 app.use(express.json());
@@ -30,7 +31,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://chat-app-3u9n.onrender.com",
+        origin: "https://chat-app-3u9n.onrender.com", 
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true,
     }
