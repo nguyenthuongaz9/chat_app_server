@@ -19,9 +19,9 @@ const port = process.env.PORT || 4000;
 
 // Cấu hình middleware CORS
 app.use(cors({
-    origin: 'https://chat-app-3u9n.onrender.com/*',
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    origin: "https://chat-app-3u9n.onrender.com", 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true
 }));
 
 app.use(cookieParser());
@@ -31,11 +31,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://chat-app-3u9n.onrender.com/*", // Cho phép miền cụ thể
+        origin: "https://chat-app-3u9n.onrender.com", 
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true,
     }
 });
+
+
 
 io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
