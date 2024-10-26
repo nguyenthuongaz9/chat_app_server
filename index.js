@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 import express from "express";
 import cors from 'cors';
@@ -10,19 +9,30 @@ import conversationRoutes from './routes/conversation.routes.js';
 import initMessageRoutes from './routes/message.routes.js';
 import http from 'http';
 import { Server } from 'socket.io';
-let activeUsers = new Map()
+
+let activeUsers = new Map();
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(cors({
-    origin: "https://chat-app-3u9n.onrender.com", 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    credentials: true
-}));
+// Cấu hình CORS để cho phép miền cụ thể
+const allowedOrigins = ["https://chat-app-3u9n.onrender.com"];
 
+// Cấu hình middleware CORS
+app.use(cors((req, callback) => {
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        callback(null, {
+            origin: origin,
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+            credentials: true // Giữ cookie và thông tin xác thực
+        });
+    } else {
+        callback(new Error("Not allowed by CORS"));
+    }
+}));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -31,7 +41,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://chat-app-3u9n.onrender.com", 
+        origin: allowedOrigins, // Cho phép miền cụ thể
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true,
     }
@@ -62,12 +72,16 @@ io.on("connection", (socket) => {
     });
 });
 
+// Static file serving
 app.use('/uploads', express.static('public/uploads'));
+
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/messages', initMessageRoutes(io));
 
+// Start server
 server.listen(port, () => {
     connectDB();
     console.log(`Server is running on port ${port}`);
