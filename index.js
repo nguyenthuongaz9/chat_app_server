@@ -17,21 +17,11 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Cấu hình CORS để cho phép miền cụ thể
-const allowedOrigins = ["https://chat-app-3u9n.onrender.com"];
-
 // Cấu hình middleware CORS
-app.use(cors((req, callback) => {
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        callback(null, {
-            origin: origin,
-            methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-            credentials: true // Giữ cookie và thông tin xác thực
-        });
-    } else {
-        callback(new Error("Not allowed by CORS"));
-    }
+app.use(cors({
+    origin: 'https://chat-app-3u9n.onrender.com/*',
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));
 
 app.use(cookieParser());
@@ -41,7 +31,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: allowedOrigins, // Cho phép miền cụ thể
+        origin: "https://chat-app-3u9n.onrender.com/*", // Cho phép miền cụ thể
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true,
     }
