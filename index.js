@@ -15,7 +15,7 @@ let activeUsers = new Map()
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 app.use(cors({
     origin: "https://chat-app-3u9n.onrender.com", 
