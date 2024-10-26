@@ -20,7 +20,7 @@ const port = process.env.PORT || 4000;
 app.use(cors({
     origin: "https://chat-app-3u9n.onrender.com", 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    credentials: true,
+    credentials: true
 }));
 
 
