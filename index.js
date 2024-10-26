@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
 });
 
 // Static file serving
-app.use('/uploads', express.static('public/uploads'));
+app.use('/uploads', express.static('./public/uploads'));
 
 // API routes
 app.use('/api/auth', authRoutes);
